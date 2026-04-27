@@ -7,65 +7,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- BASE STYLES --- */
+        /* --- SKETCHBOOK + PROFESSIONAL VARIABLES --- */
         :root {
-            --bg-color: #fafafa;
-            --text-main: #111111;
+            --bg-paper: #f9f8f3;
+            --text-ink: #2b2b2b;
             --text-light: #666666;
-            --accent: #ff3366; /* Punchy accent color */
+            --crayon-red: #ff3366; 
+            --crayon-blue: #3a86ff;
+        }
+
+        /* Hide default cursor everywhere so we can use our custom crayon */
+        * {
+            cursor: none !important;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg-paper);
+            /* Subtle paper dot grid */
+            background-image: radial-gradient(#d5d5d5 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-ink);
             font-family: 'Poppins', sans-serif;
-            cursor: none; /* Hides default cursor for our custom one */
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* --- CUSTOM REACTIVE CURSOR --- */
-        #cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent);
-            border-radius: 50%;
+        /* --- CUSTOM CRAYON CURSOR --- */
+        #crayon-cursor {
             position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Lets you click through it */
             z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            /* Adjusting the transform so the "tip" of the SVG points exactly where you click */
+            transform: translate(-5px, -95%); 
+            filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.2));
+            transition: transform 0.1s;
         }
 
-        #cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
+        /* Make the crayon "press down" slightly when clicking */
+        body:active #crayon-cursor {
+            transform: translate(-5px, -90%) rotate(-5deg);
+        }
+
+        /* --- BACKGROUND DRAWING CANVAS --- */
+        #sketch-canvas {
             position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, border-color 0.2s;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none; 
         }
 
-        /* Hover state for the cursor */
-        body.hovering #cursor-dot {
-            width: 50px;
-            height: 50px;
-            background-color: rgba(255, 51, 102, 0.2);
-        }
-        body.hovering #cursor-outline {
-            opacity: 0;
+        /* --- SVG FILTER FOR HAND-DRAWN EDGES --- */
+        .scribble-effect {
+            filter: url(#scribble-filter);
         }
 
-        /* --- SCROLL REVEAL ANIMATION CLASS --- */
+        /* --- SCROLL REVEAL ANIMATION --- */
         .reveal {
             opacity: 0;
-            transform: translateY(50px);
+            transform: translateY(40px);
             transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
@@ -78,6 +84,8 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         /* --- HEADER & HERO --- */
@@ -98,14 +106,14 @@
         nav a {
             margin-left: 2rem;
             text-decoration: none;
-            color: var(--text-main);
+            color: var(--text-ink);
             font-weight: 500;
             font-size: 1rem;
             transition: color 0.3s;
         }
 
         nav a:hover {
-            color: var(--accent);
+            color: var(--crayon-red);
         }
 
         .hero {
@@ -118,12 +126,13 @@
             line-height: 1.1;
             margin: 0 0 1.5rem 0;
             letter-spacing: -2px;
+            color: var(--text-ink);
         }
 
         .hero p {
             font-size: 1.25rem;
             color: var(--text-light);
-            max-width: 600px;
+            max-width: 650px;
             line-height: 1.6;
             margin: 0;
             font-weight: 300;
@@ -136,30 +145,30 @@
 
         .masonry-grid {
             column-count: 3;
-            column-gap: 20px;
+            column-gap: 25px;
         }
 
-        /* Responsive breakdown for grid */
         @media (max-width: 900px) { .masonry-grid { column-count: 2; } }
         @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
 
         .masonry-item {
             break-inside: avoid;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             position: relative;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #eee;
-            /* Placeholder heights to simulate image variety */
+            background: #fff;
+            /* Hand-drawn borders */
+            border: 3px solid var(--text-ink);
+            box-shadow: 6px 6px 0px var(--crayon-blue);
             min-height: 250px; 
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
-        /* Simulating different image sizes for the masonry look */
         .masonry-item:nth-child(even) { height: 400px; }
-        .masonry-item:nth-child(3n) { height: 300px; }
+        .masonry-item:nth-child(3n) { height: 320px; }
 
         .masonry-item img {
             width: 100%;
@@ -179,6 +188,7 @@
             align-items: flex-end;
             padding: 2rem;
             transition: opacity 0.4s ease;
+            z-index: 2;
         }
 
         .item-overlay h3 {
@@ -186,6 +196,11 @@
             font-size: 1.5rem;
             transform: translateY(20px);
             transition: transform 0.4s ease;
+        }
+
+        .masonry-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 0px var(--crayon-red);
         }
 
         .masonry-item:hover img {
@@ -203,7 +218,7 @@
         /* --- EXPERIENCE & ABOUT --- */
         .experience-section {
             padding: 6rem 0;
-            border-top: 1px solid #eaeaea;
+            border-top: 3px dashed var(--text-ink);
         }
 
         .section-title {
@@ -211,22 +226,29 @@
             font-weight: 800;
             margin-bottom: 3rem;
             letter-spacing: -1px;
+            text-decoration: underline;
+            text-decoration-color: var(--crayon-red);
+            text-decoration-thickness: 6px;
         }
 
         .job-card {
             display: grid;
             grid-template-columns: 1fr 3fr;
             gap: 2rem;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
+            background: #fff;
+            padding: 2rem;
+            border: 3px solid var(--text-ink);
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
         }
 
         @media (max-width: 768px) {
-            .job-card { grid-template-columns: 1fr; gap: 0.5rem; margin-bottom: 3rem;}
+            .job-card { grid-template-columns: 1fr; gap: 0.5rem; }
         }
 
         .job-date {
-            font-weight: 500;
-            color: var(--text-light);
+            font-weight: 800;
+            color: var(--crayon-blue);
             font-size: 1.1rem;
         }
 
@@ -238,23 +260,24 @@
 
         .job-details h4 {
             margin: 0 0 1rem 0;
-            color: var(--accent);
+            color: var(--text-light);
             font-size: 1.1rem;
             font-weight: 500;
         }
 
         .job-details p {
-            color: var(--text-light);
+            color: var(--text-ink);
             line-height: 1.7;
             margin-bottom: 0.5rem;
         }
 
         /* --- FOOTER --- */
         footer {
-            padding: 6rem 0 3rem 0;
+            padding: 6rem 0 4rem 0;
             text-align: center;
-            background-color: var(--text-main);
+            background-color: var(--text-ink);
             color: white;
+            border-top: 5px solid var(--crayon-red);
         }
 
         footer h2 {
@@ -265,7 +288,7 @@
         }
 
         footer a {
-            color: var(--accent);
+            color: var(--crayon-red);
             font-size: 1.5rem;
             text-decoration: none;
             font-weight: 500;
@@ -273,21 +296,38 @@
         
         footer a:hover {
             text-decoration: underline;
+            color: white;
         }
     </style>
 </head>
 <body>
 
-    <div id="cursor-dot"></div>
-    <div id="cursor-outline"></div>
+    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <filter id="scribble-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <canvas id="sketch-canvas"></canvas>
+
+    <div id="crayon-cursor">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.5 3.5L20.5 7.5L8.5 19.5L4.5 15.5L16.5 3.5Z" fill="#ff3366" stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M4.5 15.5L2 22L8.5 19.5L4.5 15.5Z" fill="#ff3366" stroke="#2b2b2b" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M14.5 5.5L18.5 9.5M6.5 13.5L10.5 17.5" stroke="#2b2b2b" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+    </div>
 
     <div class="container">
         <header>
             <div class="logo">Bhaskar.S</div>
             <nav>
-                <a href="#work" class="hoverable">Work</a>
-                <a href="#experience" class="hoverable">Experience</a>
-                <a href="mailto:bhaskarskwork@gmail.com" class="hoverable">Contact</a>
+                <a href="#work">Work</a>
+                <a href="#experience">Experience</a>
+                <a href="mailto:bhaskarskwork@gmail.com">Contact</a>
             </nav>
         </header>
 
@@ -298,42 +338,42 @@
 
         <section id="work" class="portfolio-section">
             <div class="masonry-grid">
-                <div class="masonry-item hoverable reveal">
-                    <p style="color:#999; position:absolute;">Replace with Image 1</p>
+                <div class="masonry-item scribble-effect reveal">
+                    <p style="color:#999; position:absolute; z-index:1;">Replace with Image 1</p>
                     <div class="item-overlay"><h3>Character Design</h3></div>
                 </div>
                 
-                <div class="masonry-item hoverable reveal">
-                    <p style="color:#999; position:absolute;">Replace with Image 2</p>
+                <div class="masonry-item scribble-effect reveal">
+                    <p style="color:#999; position:absolute; z-index:1;">Replace with Image 2</p>
                     <div class="item-overlay"><h3>Storyboards</h3></div>
                 </div>
 
-                <div class="masonry-item hoverable reveal">
-                    <p style="color:#999; position:absolute;">Replace with Image 3</p>
+                <div class="masonry-item scribble-effect reveal">
+                    <p style="color:#999; position:absolute; z-index:1;">Replace with Image 3</p>
                     <div class="item-overlay"><h3>Editorial Illustration</h3></div>
                 </div>
 
-                <div class="masonry-item hoverable reveal">
-                    <p style="color:#999; position:absolute;">Replace with Image 4</p>
+                <div class="masonry-item scribble-effect reveal">
+                    <p style="color:#999; position:absolute; z-index:1;">Replace with Image 4</p>
                     <div class="item-overlay"><h3>Visual Development</h3></div>
                 </div>
 
-                <div class="masonry-item hoverable reveal">
-                    <p style="color:#999; position:absolute;">Replace with Image 5</p>
+                <div class="masonry-item scribble-effect reveal">
+                    <p style="color:#999; position:absolute; z-index:1;">Replace with Image 5</p>
                     <div class="item-overlay"><h3>Pre-Production</h3></div>
                 </div>
                 
-                <div class="masonry-item hoverable reveal">
-                    <p style="color:#999; position:absolute;">Replace with Image 6</p>
+                <div class="masonry-item scribble-effect reveal">
+                    <p style="color:#999; position:absolute; z-index:1;">Replace with Image 6</p>
                     <div class="item-overlay"><h3>Sketches</h3></div>
                 </div>
             </div>
         </section>
 
         <section id="experience" class="experience-section">
-            <h2 class="section-title reveal">Experience</h2>
+            <h2 class="section-title reveal scribble-effect">Experience</h2>
             
-            <div class="job-card reveal">
+            <div class="job-card reveal scribble-effect">
                 <div class="job-date">June 2024 - Mar 2025</div>
                 <div class="job-details">
                     <h3>Storyboard/Pre-Production Artist</h3>
@@ -343,7 +383,7 @@
                 </div>
             </div>
 
-            <div class="job-card reveal">
+            <div class="job-card reveal scribble-effect">
                 <div class="job-date">Mar 2023 - Mar 2024</div>
                 <div class="job-details">
                     <h3>Art Facilitator</h3>
@@ -353,7 +393,7 @@
                 </div>
             </div>
 
-            <div class="job-card reveal">
+            <div class="job-card reveal scribble-effect">
                 <div class="job-date">Aug 2021 - Mar 2023</div>
                 <div class="job-details">
                     <h3>Freelance Illustrator</h3>
@@ -362,7 +402,7 @@
                 </div>
             </div>
 
-            <div class="job-card reveal">
+            <div class="job-card reveal scribble-effect">
                 <div class="job-date">Jan 2020 - Aug 2021</div>
                 <div class="job-details">
                     <h3>Pre-Production Artist</h3>
@@ -375,38 +415,64 @@
     </div>
 
     <footer id="contact" class="reveal">
-        <h2>Let's Talk.</h2>
-        <a href="mailto:bhaskarskwork@gmail.com" class="hoverable">bhaskarskwork@gmail.com</a>
-        <p style="color: #666; margin-top: 2rem;">Hyderabad, India • +91-7997641548</p>
+        <h2>Let's Create.</h2>
+        <a href="mailto:bhaskarskwork@gmail.com">bhaskarskwork@gmail.com</a>
+        <p style="color: #999; margin-top: 2rem;">Hyderabad, India • +91-7997641548</p>
     </footer>
 
     <script>
-        // 1. CUSTOM MAGNETIC CURSOR
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorOutline = document.getElementById('cursor-outline');
+        // 1. CUSTOM CRAYON CURSOR FOLLOWER
+        const crayonCursor = document.getElementById('crayon-cursor');
         
-        window.addEventListener('mousemove', function(e) {
-            const posX = e.clientX;
-            const posY = e.clientY;
-            
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            
-            // Add a slight delay to the outline for a smooth drag effect
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
+        // 2. DRAWING CANVAS LOGIC
+        const canvas = document.getElementById("sketch-canvas");
+        const ctx = canvas.getContext("2d");
+        
+        // Resize canvas to fill window
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        let lastX = 0;
+        let lastY = 0;
+        let isDrawing = false;
+
+        document.addEventListener('mousemove', (e) => {
+            // Update Crayon Cursor Position
+            crayonCursor.style.left = `${e.clientX}px`;
+            crayonCursor.style.top = `${e.clientY}px`;
+
+            // Canvas Drawing Logic
+            if (!isDrawing) {
+                lastX = e.clientX;
+                lastY = e.clientY;
+                isDrawing = true;
+                return;
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.clientX, e.clientY);
+            ctx.strokeStyle = '#ff3366'; // Red crayon ink color
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            lastX = e.clientX;
+            lastY = e.clientY;
         });
 
-        // Make cursor expand when hovering over elements with class 'hoverable'
-        const hoverables = document.querySelectorAll('.hoverable');
-        hoverables.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-        });
+        // Fades the drawing away slowly by painting over it with transparent paper color
+        setInterval(() => {
+            ctx.fillStyle = "rgba(249, 248, 243, 0.04)"; // Matches --bg-paper
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }, 50);
 
-        // 2. SCROLL REVEAL ANIMATIONS
+        // 3. SCROLL REVEAL ANIMATIONS
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
