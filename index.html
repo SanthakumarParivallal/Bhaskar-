@@ -39,15 +39,13 @@
             position: fixed;
             top: 0;
             left: 0;
-            pointer-events: none; /* Lets you click through it */
+            pointer-events: none; 
             z-index: 9999;
-            /* Adjusting the transform so the "tip" of the SVG points exactly where you click */
             transform: translate(-5px, -95%); 
             filter: drop-shadow(3px 3px 2px rgba(0,0,0,0.2));
             transition: transform 0.1s;
         }
 
-        /* Make the crayon "press down" slightly when clicking */
         body:active #crayon-cursor {
             transform: translate(-5px, -90%) rotate(-5deg);
         }
@@ -156,7 +154,6 @@
             margin-bottom: 25px;
             position: relative;
             background: #fff;
-            /* Hand-drawn borders */
             border: 3px solid var(--text-ink);
             box-shadow: 6px 6px 0px var(--crayon-blue);
             min-height: 250px; 
@@ -177,7 +174,6 @@
             transition: transform 0.5s ease;
         }
 
-        /* Hover Overlay */
         .item-overlay {
             position: absolute;
             inset: 0;
@@ -271,7 +267,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER & SOCIAL ICONS --- */
         footer {
             padding: 6rem 0 4rem 0;
             text-align: center;
@@ -287,16 +283,45 @@
             letter-spacing: -2px;
         }
 
-        footer a {
-            color: var(--crayon-red);
-            font-size: 1.5rem;
-            text-decoration: none;
-            font-weight: 500;
+        .footer-subtitle {
+            color: #999;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
         }
-        
-        footer a:hover {
-            text-decoration: underline;
-            color: white;
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: #fff;
+            border: 3px solid var(--text-ink);
+            border-radius: 12px;
+            color: var(--text-ink);
+            box-shadow: 4px 4px 0px var(--crayon-blue);
+            transition: all 0.2s ease;
+        }
+
+        .social-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0px var(--crayon-red);
+            color: var(--crayon-red);
+            border-color: var(--crayon-red);
         }
     </style>
 </head>
@@ -327,7 +352,7 @@
             <nav>
                 <a href="#work">Work</a>
                 <a href="#experience">Experience</a>
-                <a href="mailto:bhaskarskwork@gmail.com">Contact</a>
+                <a href="#contact">Contact</a>
             </nav>
         </header>
 
@@ -342,27 +367,22 @@
                     <p style="color:#999; position:absolute; z-index:1;">Replace with Image 1</p>
                     <div class="item-overlay"><h3>Character Design</h3></div>
                 </div>
-                
                 <div class="masonry-item scribble-effect reveal">
                     <p style="color:#999; position:absolute; z-index:1;">Replace with Image 2</p>
                     <div class="item-overlay"><h3>Storyboards</h3></div>
                 </div>
-
                 <div class="masonry-item scribble-effect reveal">
                     <p style="color:#999; position:absolute; z-index:1;">Replace with Image 3</p>
                     <div class="item-overlay"><h3>Editorial Illustration</h3></div>
                 </div>
-
                 <div class="masonry-item scribble-effect reveal">
                     <p style="color:#999; position:absolute; z-index:1;">Replace with Image 4</p>
                     <div class="item-overlay"><h3>Visual Development</h3></div>
                 </div>
-
                 <div class="masonry-item scribble-effect reveal">
                     <p style="color:#999; position:absolute; z-index:1;">Replace with Image 5</p>
                     <div class="item-overlay"><h3>Pre-Production</h3></div>
                 </div>
-                
                 <div class="masonry-item scribble-effect reveal">
                     <p style="color:#999; position:absolute; z-index:1;">Replace with Image 6</p>
                     <div class="item-overlay"><h3>Sketches</h3></div>
@@ -416,8 +436,35 @@
 
     <footer id="contact" class="reveal">
         <h2>Let's Create.</h2>
-        <a href="mailto:bhaskarskwork@gmail.com">bhaskarskwork@gmail.com</a>
-        <p style="color: #999; margin-top: 2rem;">Hyderabad, India • +91-7997641548</p>
+        <p class="footer-subtitle">Hyderabad, India • +91-7997641548</p>
+        
+        <div class="social-links scribble-effect">
+            
+            <a href="https://instagram.com/art.thambi" target="_blank" class="social-icon" title="Instagram">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                </svg>
+            </a>
+
+            <a href="https://behance.net/artthambi" target="_blank" class="social-icon" title="Behance">
+                <svg viewBox="0 0 24 24">
+                    <path d="M22 7h-7v-2h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14h-8.027c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988h-6.466v-14.967h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zm-3.466-8.988h3.584c2.508 0 2.906-3-.312-3h-3.272v3zm3.391 3h-3.391v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/>
+                </svg>
+            </a>
+
+            <a href="https://linktr.ee/artthambi" target="_blank" class="social-icon" title="Linktree">
+                <svg viewBox="0 0 24 24">
+                    <path d="M13.511 5.853l4.005-4.117 2.349 2.281-5.054 5.192h9.189v3.2h-9.189l5.054 5.187-2.349 2.287-4.005-4.112v8.229h-3.022v-8.229l-4.001 4.112-2.353-2.287 5.058-5.187h-9.193v-3.2h9.193l-5.058-5.192 2.353-2.281 4.001 4.117v-5.853h3.022v5.853z"/>
+                </svg>
+            </a>
+
+            <a href="mailto:bhaskarskwork@gmail.com" class="social-icon" title="Email">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12.713l-11.985-9.713h23.97l-11.985 9.713zm0 2.574l-12-9.725v15.438h24v-15.438l-12 9.725z"/>
+                </svg>
+            </a>
+            
+        </div>
     </footer>
 
     <script>
@@ -428,7 +475,6 @@
         const canvas = document.getElementById("sketch-canvas");
         const ctx = canvas.getContext("2d");
         
-        // Resize canvas to fill window
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -441,11 +487,9 @@
         let isDrawing = false;
 
         document.addEventListener('mousemove', (e) => {
-            // Update Crayon Cursor Position
             crayonCursor.style.left = `${e.clientX}px`;
             crayonCursor.style.top = `${e.clientY}px`;
 
-            // Canvas Drawing Logic
             if (!isDrawing) {
                 lastX = e.clientX;
                 lastY = e.clientY;
@@ -456,7 +500,7 @@
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
             ctx.lineTo(e.clientX, e.clientY);
-            ctx.strokeStyle = '#ff3366'; // Red crayon ink color
+            ctx.strokeStyle = '#ff3366'; 
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -466,9 +510,8 @@
             lastY = e.clientY;
         });
 
-        // Fades the drawing away slowly by painting over it with transparent paper color
         setInterval(() => {
-            ctx.fillStyle = "rgba(249, 248, 243, 0.04)"; // Matches --bg-paper
+            ctx.fillStyle = "rgba(249, 248, 243, 0.04)"; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }, 50);
 
@@ -478,7 +521,7 @@
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 100; // how many pixels before it appears
+                var elementVisible = 100; 
 
                 if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
@@ -486,7 +529,7 @@
             }
         }
         window.addEventListener("scroll", reveal);
-        reveal(); // Trigger on load
+        reveal(); 
     </script>
 </body>
 </html>
