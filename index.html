@@ -5,157 +5,323 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bhaskar Sivakumar | Visual Artist</title>
     <style>
+        /* Base Styles & Typography */
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #f5f5f5;
+            --accent: #a855f7;
+        }
+        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
             margin: 0;
             padding: 0;
-            color: #333;
-            background-color: #f9f9f9;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            overflow-x: hidden;
+            position: relative;
         }
-        header {
-            background: #222;
-            color: #fff;
-            padding: 3rem 1rem;
-            text-align: center;
+
+        /* --- REACTIVE BACKGROUND STYLES --- */
+        #blob {
+            background-color: white;
+            height: 400px;
+            aspect-ratio: 1;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            translate: -50% -50%;
+            border-radius: 50%;
+            background: linear-gradient(to right, #00f2fe, #4facfe, #a855f7, #f761a1);
+            animation: rotate 10s infinite linear;
+            z-index: -2;
+            opacity: 0.8;
+            filter: blur(80px);
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-            letter-spacing: 2px;
+
+        @keyframes rotate {
+            from { rotate: 0deg; }
+            to { rotate: 360deg; }
         }
-        header p {
-            font-size: 1.2rem;
-            color: #bbb;
+
+        #blur-overlay {
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            z-index: -1;
+            backdrop-filter: blur(120px);
+            -webkit-backdrop-filter: blur(120px);
         }
+
+        /* --- GLASSMORPHISM UI --- */
         .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-            padding: 2rem 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
         }
-        .section-title {
+
+        header {
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2rem;
-            color: #222;
+            margin-bottom: 5rem;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
         }
-        .about-text {
-            text-align: center;
+
+        header h1 {
+            font-size: 3.5rem;
+            margin: 0 0 10px 0;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header h2 {
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: #ccc;
+            margin-top: 0;
+        }
+
+        header p {
+            max-width: 700px;
+            margin: 20px auto 0;
+            line-height: 1.8;
+            color: #ddd;
             font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto 2rem auto;
         }
-        /* Grid for Portfolio Placeholders */
+
+        h2.section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* --- PORTFOLIO GRID --- */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 3rem;
+            gap: 25px;
+            margin-bottom: 5rem;
         }
-        .portfolio-item {
-            background: #ddd;
-            height: 250px;
+
+        .portfolio-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            height: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: #666;
-            border-radius: 8px;
-            border: 2px dashed #bbb;
-        }
-        .experience-card {
-            background: #fff;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .experience-card h3 {
-            margin-top: 0;
-            color: #444;
-        }
-        footer {
-            background: #222;
-            color: #fff;
             text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
+            padding: 1rem;
         }
-        a {
-            color: #007BFF;
+
+        .portfolio-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .portfolio-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .portfolio-card:hover img {
+            opacity: 1;
+        }
+
+        .portfolio-card p {
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+
+        /* --- EXPERIENCE SECTION --- */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 5rem;
+        }
+
+        .experience-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .experience-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .experience-card h3 {
+            margin: 0 0 5px 0;
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .experience-card span {
+            font-size: 0.9rem;
+            color: #aaa;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .experience-card ul {
+            padding-left: 20px;
+            margin: 0;
+            color: #ddd;
+            line-height: 1.7;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer a {
+            color: var(--accent);
             text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>BHASKAR SIVAKUMAR</h1>
-        <p>Visual Artist & Art Educator</p>
-    </header>
+    <div id="blob"></div>
+    <div id="blur-overlay"></div>
 
     <div class="container">
-        <h2 class="section-title">About Me</h2>
-        <p class="about-text">
-            I am a creative and detail-oriented Illustrator with a passion for Visual Storytelling. 
-            With a background in Character Design, Storyboarding, and Sequential Art, I am seeking to transition into an Art Educator role, 
-            where I can inspire and support students in exploring their creative curiosity and expressing themselves through Visual Art.
-        </p>
-
-        <hr style="border: 0; border-top: 1px solid #ccc; margin: 3rem 0;">
+        
+        <header>
+            <h1>BHASKAR SIVAKUMAR [cite: 1, 3]</h1>
+            <h2>VISUAL ARTIST [cite: 2]</h2>
+            <p>
+                Creative and detail-oriented Illustrator with a passion for Visual Storytelling. [cite: 22] 
+                With a background in Character Design, Storyboarding and Sequential Art, I am seeking to transition into an Art Educator role, where I can inspire and support students in exploring their creative curiosity and expressing themselves through Visual Art. [cite: 23]
+            </p>
+        </header>
 
         <h2 class="section-title">Selected Works</h2>
         <div class="portfolio-grid">
-            <div class="portfolio-item">Upload Image 1 Here</div>
-            <div class="portfolio-item">Upload Image 2 Here</div>
-            <div class="portfolio-item">Upload Image 3 Here</div>
-            <div class="portfolio-item">Upload Image 4 Here</div>
-            <div class="portfolio-item">Upload Image 5 Here</div>
-            <div class="portfolio-item">Upload Image 6 Here</div>
-        </div>
-        <p style="text-align: center;"><em>*Replace these grey boxes with actual artwork files in the final build*</em></p>
-
-        <hr style="border: 0; border-top: 1px solid #ccc; margin: 3rem 0;">
-
-        <h2 class="section-title">Professional Experience</h2>
-        
-        <div class="experience-card">
-            <h3>Storyboard/Pre-Production Artist | Mahayana Studios</h3>
-            <p><strong>June 2024 – March 2025</strong></p>
-            <ul>
-                <li>Translated script into detailed storyboards, ensuring clear scene visualization.</li>
-                <li>Designed compelling poster concepts and promo video animations.</li>
-                <li>Developed character concepts and pre-visualization assets.</li>
-            </ul>
+            <div class="portfolio-card">
+                <p>Add Behance Image 1</p>
+            </div>
+            <div class="portfolio-card">
+                <p>Add Behance Image 2</p>
+            </div>
+            <div class="portfolio-card">
+                <p>Add Behance Image 3</p>
+            </div>
+            <div class="portfolio-card">
+                <p>Add Behance Image 4</p>
+            </div>
+            <div class="portfolio-card">
+                <p>Add Behance Image 5</p>
+            </div>
+            <div class="portfolio-card">
+                <p>Add Behance Image 6</p>
+            </div>
         </div>
 
-        <div class="experience-card">
-            <h3>Art Facilitator | Edify World School, Hyderabad</h3>
-            <p><strong>March 2023 – March 2024</strong></p>
-            <ul>
-                <li>Developed and implemented art curriculum aligned with the Cambridge Curriculum Framework.</li>
-                <li>Fostered a multicultural and inquiry-based learning environment.</li>
-            </ul>
-        </div>
+        <h2 class="section-title">Experience [cite: 24]</h2>
+        <div class="timeline">
+            
+            <div class="experience-card">
+                <h3>Storyboard/Pre-Production Artist | Mahayana Studios [cite: 25]</h3>
+                <span>June 2024 - March 2025 [cite: 25]</span>
+                <ul>
+                    <li>Translated script into detailed storyboards, ensuring clear scene visualization. [cite: 26]</li>
+                    <li>Designed compelling poster concepts and promo video animations. [cite: 27]</li>
+                    <li>Developed character concepts and pre-visualization assets. [cite: 28]</li>
+                </ul>
+            </div>
 
-        <div class="experience-card">
-            <h3>Freelance Illustrator</h3>
-            <p><strong>Aug 2021 – March 2023</strong></p>
-            <ul>
-                <li>Created editorial illustrations, book covers, digital art commissions, and branding designs.</li>
-            </ul>
-        </div>
+            <div class="experience-card">
+                <h3>Art Facilitator | Edify World School, Hyderabad [cite: 29]</h3>
+                <span>March 2023 - March 2024 [cite: 29]</span>
+                <ul>
+                    <li>Developing and implementing an art curriculum aligned with the Cambridge Curriculum Framework. [cite: 30]</li>
+                    <li>Foster a multicultural and inquiry-based learning environment. [cite: 31]</li>
+                </ul>
+            </div>
 
+            <div class="experience-card">
+                <h3>Freelance Illustrator [cite: 39]</h3>
+                <span>Aug 2021 - March 2023 [cite: 40]</span>
+                <ul>
+                    <li>Creating a diverse range of projects, including editorial illustrations, book covers, digital art commissions, and branding designs. [cite: 41]</li>
+                </ul>
+            </div>
+
+             <div class="experience-card">
+                <h3>Pre-Production Artist | Pocket Aces, Mumbai [cite: 44]</h3>
+                <span>Jan 2020 - Aug 2021 [cite: 44]</span>
+                <ul>
+                    <li>Led the conceptualization and development of compelling and visually distinct characters. [cite: 45]</li>
+                    <li>Crafting storyboards that effectively communicate narrative sequences. [cite: 46]</li>
+                </ul>
+            </div>
+
+        </div>
     </div>
 
     <footer>
-        <h2>Let's Work Together</h2>
-        <p>Email: <a href="mailto:bhaskarskwork@gmail.com" style="color: #fff; text-decoration: underline;">bhaskarskwork@gmail.com</a></p>
-        <p>Phone: +91-7997641548</p>
-        <p>Location: Malkajgiri, Hyderabad</p>
-        <p style="margin-top: 2rem; font-size: 0.8rem; color: #777;">&copy; 2026 Bhaskar Sivakumar. All Rights Reserved.</p>
+        <h2>Let's Connect</h2>
+        <p>Email: <a href="mailto:bhaskarskwork@gmail.com">bhaskarskwork@gmail.com [cite: 5]</a></p>
+        <p>Phone: +91-7997641548 [cite: 4]</p>
+        <p>Location: Malkajgiri, Hyderabad [cite: 6]</p>
     </footer>
 
+    <script>
+        // This script makes the glowing orb smoothly follow the mouse
+        const blob = document.getElementById("blob");
+
+        document.body.onpointermove = event => { 
+            const { clientX, clientY } = event;
+            
+            blob.animate({
+                left: `${clientX}px`,
+                top: `${clientY}px`
+            }, { duration: 3000, fill: "forwards" });
+        }
+    </script>
 </body>
 </html>
