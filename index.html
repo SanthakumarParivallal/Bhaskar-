@@ -5,57 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bhaskar Sivakumar | Visual Artist</title>
     <style>
-        /* Base Styles & Typography */
+        /* Sketchbook Theme Variables */
         :root {
-            --bg-color: #0a0a0a;
-            --text-color: #f5f5f5;
-            --accent: #a855f7;
+            --bg-paper: #f9f8f3;
+            --text-ink: #2b2b2b;
+            --crayon-color: #ff5e5e; /* Bright red crayon */
+            --crayon-blue: #3a86ff;
+            --crayon-yellow: #ffbe0b;
         }
         
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-paper);
+            /* Subtle paper texture using CSS grid pattern */
+            background-image: radial-gradient(#d5d5d5 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-ink);
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe Print', sans-serif; /* Playful fonts */
             overflow-x: hidden;
             position: relative;
         }
 
-        /* --- REACTIVE BACKGROUND STYLES --- */
-        #blob {
-            background-color: white;
-            height: 400px;
+        /* --- SVG FILTER FOR HAND-DRAWN CRAYON LOOK --- */
+        .scribble-effect {
+            filter: url(#scribble-filter);
+        }
+
+        /* --- REACTIVE CRAYON BLOB --- */
+        #crayon-blob {
+            background-color: var(--crayon-color);
+            height: 150px;
             aspect-ratio: 1;
             position: fixed;
             left: 50%;
             top: 50%;
             translate: -50% -50%;
-            border-radius: 50%;
-            background: linear-gradient(to right, #00f2fe, #4facfe, #a855f7, #f761a1);
-            animation: rotate 10s infinite linear;
-            z-index: -2;
-            opacity: 0.8;
-            filter: blur(80px);
-        }
-
-        @keyframes rotate {
-            from { rotate: 0deg; }
-            to { rotate: 360deg; }
-        }
-
-        #blur-overlay {
-            height: 100vh;
-            width: 100vw;
-            position: fixed;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             z-index: -1;
-            backdrop-filter: blur(120px);
-            -webkit-backdrop-filter: blur(120px);
+            opacity: 0.6;
+            mix-blend-mode: multiply; /* Makes it look like ink on paper */
+            pointer-events: none;
+            /* Apply scribble edge */
+            filter: url(#scribble-filter);
+            animation: morph 3s infinite linear alternate;
         }
 
-        /* --- GLASSMORPHISM UI --- */
+        @keyframes morph {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 50% 40% 50%; }
+        }
+
+        /* --- LAYOUT & UI --- */
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 4rem 2rem;
             position: relative;
@@ -64,75 +67,69 @@
 
         header {
             text-align: center;
-            margin-bottom: 5rem;
-            padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
+            margin-bottom: 4rem;
+            padding: 3rem 2rem;
+            background: #fff;
+            border: 4px solid var(--text-ink);
+            box-shadow: 8px 8px 0px var(--crayon-blue);
         }
 
         header h1 {
             font-size: 3.5rem;
             margin: 0 0 10px 0;
+            text-transform: uppercase;
             letter-spacing: 2px;
-            background: linear-gradient(to right, #fff, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-ink);
         }
 
         header h2 {
-            font-weight: 300;
-            letter-spacing: 5px;
-            color: #ccc;
+            font-size: 1.5rem;
+            color: var(--crayon-blue);
             margin-top: 0;
         }
 
         header p {
             max-width: 700px;
             margin: 20px auto 0;
-            line-height: 1.8;
-            color: #ddd;
+            line-height: 1.6;
             font-size: 1.1rem;
         }
 
         h2.section-title {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            color: var(--text-ink);
+            text-decoration: underline;
+            text-decoration-color: var(--crayon-yellow);
+            text-decoration-thickness: 5px;
+            text-decoration-skip-ink: none;
         }
 
         /* --- PORTFOLIO GRID --- */
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
             margin-bottom: 5rem;
         }
 
         .portfolio-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            height: 300px;
+            background: #fff;
+            border: 3px solid var(--text-ink);
+            height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 1rem;
+            font-weight: bold;
+            color: var(--text-ink);
+            position: relative;
+            transition: transform 0.2s ease;
+            box-shadow: 5px 5px 0px var(--crayon-color);
         }
 
         .portfolio-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05) rotate(-2deg);
         }
 
         .portfolio-card img {
@@ -142,161 +139,141 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 0;
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
-        }
-
-        .portfolio-card:hover img {
-            opacity: 1;
         }
 
         .portfolio-card p {
             position: relative;
             z-index: 1;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #fff;
-            background: rgba(0,0,0,0.5);
-            padding: 10px 20px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 15px;
+            border: 2px solid var(--text-ink);
         }
 
-        /* --- EXPERIENCE SECTION --- */
+        /* --- EXPERIENCE TIMELINE --- */
         .timeline {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 5rem;
         }
 
         .experience-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #fff;
+            border: 3px solid var(--text-ink);
             padding: 2rem;
-            border-radius: 15px;
-            transition: background 0.3s ease;
-        }
-
-        .experience-card:hover {
-            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
         }
 
         .experience-card h3 {
             margin: 0 0 5px 0;
-            color: var(--accent);
-            font-size: 1.4rem;
+            color: var(--crayon-blue);
+            font-size: 1.5rem;
         }
 
         .experience-card span {
-            font-size: 0.9rem;
-            color: #aaa;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--crayon-color);
             display: block;
             margin-bottom: 15px;
         }
 
         .experience-card ul {
-            padding-left: 20px;
+            padding-left: 25px;
             margin: 0;
-            color: #ddd;
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
         /* --- FOOTER --- */
         footer {
             text-align: center;
-            padding: 4rem 2rem;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem 2rem;
+            background: #fff;
+            border-top: 5px dashed var(--text-ink);
         }
 
         footer a {
-            color: var(--accent);
+            color: var(--crayon-blue);
             text-decoration: none;
             font-weight: bold;
-            transition: color 0.3s ease;
         }
-
+        
         footer a:hover {
-            color: #fff;
+            text-decoration: underline;
+            color: var(--crayon-color);
         }
     </style>
 </head>
 <body>
 
-    <div id="blob"></div>
-    <div id="blur-overlay"></div>
+    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <filter id="scribble-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div id="crayon-blob"></div>
 
     <div class="container">
         
-        <header>
-            <h1>BHASKAR SIVAKUMAR [cite: 1, 3]</h1>
-            <h2>VISUAL ARTIST [cite: 2]</h2>
+        <header class="scribble-effect">
+            <h1>BHASKAR SIVAKUMAR</h1>
+            <h2>VISUAL ARTIST</h2>
             <p>
-                Creative and detail-oriented Illustrator with a passion for Visual Storytelling. [cite: 22] 
-                With a background in Character Design, Storyboarding and Sequential Art, I am seeking to transition into an Art Educator role, where I can inspire and support students in exploring their creative curiosity and expressing themselves through Visual Art. [cite: 23]
+                Creative and detail-oriented Illustrator with a passion for Visual Storytelling[cite: 22]. 
+                With a background in Character Design, Storyboarding and Sequential Art, I am seeking to transition into an Art Educator role, where I can inspire and support students in exploring their creative curiosity and expressing themselves through Visual Art[cite: 23].
             </p>
         </header>
 
-        <h2 class="section-title">Selected Works</h2>
+        <h2 class="section-title scribble-effect">My Portfolio</h2>
         <div class="portfolio-grid">
-            <div class="portfolio-card">
-                <p>Add Behance Image 1</p>
-            </div>
-            <div class="portfolio-card">
-                <p>Add Behance Image 2</p>
-            </div>
-            <div class="portfolio-card">
-                <p>Add Behance Image 3</p>
-            </div>
-            <div class="portfolio-card">
-                <p>Add Behance Image 4</p>
-            </div>
-            <div class="portfolio-card">
-                <p>Add Behance Image 5</p>
-            </div>
-            <div class="portfolio-card">
-                <p>Add Behance Image 6</p>
-            </div>
+            <div class="portfolio-card scribble-effect"><p>Artwork 1</p></div>
+            <div class="portfolio-card scribble-effect"><p>Artwork 2</p></div>
+            <div class="portfolio-card scribble-effect"><p>Artwork 3</p></div>
+            <div class="portfolio-card scribble-effect"><p>Artwork 4</p></div>
+            <div class="portfolio-card scribble-effect"><p>Artwork 5</p></div>
+            <div class="portfolio-card scribble-effect"><p>Artwork 6</p></div>
         </div>
 
-        <h2 class="section-title">Experience [cite: 24]</h2>
+        <h2 class="section-title scribble-effect">Experience</h2>
         <div class="timeline">
             
-            <div class="experience-card">
-                <h3>Storyboard/Pre-Production Artist | Mahayana Studios [cite: 25]</h3>
-                <span>June 2024 - March 2025 [cite: 25]</span>
+            <div class="experience-card scribble-effect">
+                <h3>Storyboard/Pre-Production Artist | Mahayana Studios</h3>
+                <span>June 2024 - March 2025</span>
                 <ul>
-                    <li>Translated script into detailed storyboards, ensuring clear scene visualization. [cite: 26]</li>
-                    <li>Designed compelling poster concepts and promo video animations. [cite: 27]</li>
-                    <li>Developed character concepts and pre-visualization assets. [cite: 28]</li>
+                    <li>Translated script into detailed storyboards, ensuring clear scene visualization[cite: 26].</li>
+                    <li>Designed compelling poster concepts and promo video animations[cite: 27].</li>
+                    <li>Developed character concepts and pre-visualization assets[cite: 28].</li>
                 </ul>
             </div>
 
-            <div class="experience-card">
-                <h3>Art Facilitator | Edify World School, Hyderabad [cite: 29]</h3>
-                <span>March 2023 - March 2024 [cite: 29]</span>
+            <div class="experience-card scribble-effect">
+                <h3>Art Facilitator | Edify World School, Hyderabad</h3>
+                <span>March 2023 - March 2024</span>
                 <ul>
-                    <li>Developing and implementing an art curriculum aligned with the Cambridge Curriculum Framework. [cite: 30]</li>
-                    <li>Foster a multicultural and inquiry-based learning environment. [cite: 31]</li>
+                    <li>Developing and implementing an art curriculum aligned with the Cambridge Curriculum Framework[cite: 30].</li>
+                    <li>Foster a multicultural and inquiry-based learning environment[cite: 31].</li>
                 </ul>
             </div>
 
-            <div class="experience-card">
-                <h3>Freelance Illustrator [cite: 39]</h3>
-                <span>Aug 2021 - March 2023 [cite: 40]</span>
+            <div class="experience-card scribble-effect">
+                <h3>Freelance Illustrator</h3>
+                <span>Aug 2021 - March 2023</span>
                 <ul>
-                    <li>Creating a diverse range of projects, including editorial illustrations, book covers, digital art commissions, and branding designs. [cite: 41]</li>
+                    <li>Creating a diverse range of projects, including editorial illustrations, book covers, digital art commissions, and branding designs[cite: 41].</li>
                 </ul>
             </div>
 
-             <div class="experience-card">
-                <h3>Pre-Production Artist | Pocket Aces, Mumbai [cite: 44]</h3>
-                <span>Jan 2020 - Aug 2021 [cite: 44]</span>
+             <div class="experience-card scribble-effect">
+                <h3>Pre-Production Artist | Pocket Aces, Mumbai</h3>
+                <span>Jan 2020 - Aug 2021</span>
                 <ul>
-                    <li>Led the conceptualization and development of compelling and visually distinct characters. [cite: 45]</li>
-                    <li>Crafting storyboards that effectively communicate narrative sequences. [cite: 46]</li>
+                    <li>Led the conceptualization and development of compelling and visually distinct characters[cite: 45].</li>
+                    <li>Crafting storyboards that effectively communicate narrative sequences[cite: 46].</li>
                 </ul>
             </div>
 
@@ -304,23 +281,24 @@
     </div>
 
     <footer>
-        <h2>Let's Connect</h2>
-        <p>Email: <a href="mailto:bhaskarskwork@gmail.com">bhaskarskwork@gmail.com [cite: 5]</a></p>
+        <h2>Let's Create Together!</h2>
+        <p>Email: <a href="mailto:bhaskarskwork@gmail.com">bhaskarskwork@gmail.com</a> [cite: 5]</p>
         <p>Phone: +91-7997641548 [cite: 4]</p>
         <p>Location: Malkajgiri, Hyderabad [cite: 6]</p>
     </footer>
 
     <script>
-        // This script makes the glowing orb smoothly follow the mouse
-        const blob = document.getElementById("blob");
+        // This script makes the crayon blob smoothly follow the mouse
+        const blob = document.getElementById("crayon-blob");
 
         document.body.onpointermove = event => { 
             const { clientX, clientY } = event;
             
+            // The animation duration controls how "laggy/smooth" the follower is
             blob.animate({
                 left: `${clientX}px`,
                 top: `${clientY}px`
-            }, { duration: 3000, fill: "forwards" });
+            }, { duration: 800, fill: "forwards" });
         }
     </script>
 </body>
