@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhaskar Sivakumar | Visual Artist</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        header {
+            background: #222;
+            color: #fff;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+        header p {
+            font-size: 1.2rem;
+            color: #bbb;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: #222;
+        }
+        .about-text {
+            text-align: center;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+        /* Grid for Portfolio Placeholders */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 3rem;
+        }
+        .portfolio-item {
+            background: #ddd;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #666;
+            border-radius: 8px;
+            border: 2px dashed #bbb;
+        }
+        .experience-card {
+            background: #fff;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .experience-card h3 {
+            margin-top: 0;
+            color: #444;
+        }
+        footer {
+            background: #222;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BHASKAR SIVAKUMAR</h1>
+        <p>Visual Artist & Art Educator</p>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <p class="about-text">
+            I am a creative and detail-oriented Illustrator with a passion for Visual Storytelling. 
+            With a background in Character Design, Storyboarding, and Sequential Art, I am seeking to transition into an Art Educator role, 
+            where I can inspire and support students in exploring their creative curiosity and expressing themselves through Visual Art.
+        </p>
+
+        <hr style="border: 0; border-top: 1px solid #ccc; margin: 3rem 0;">
+
+        <h2 class="section-title">Selected Works</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">Upload Image 1 Here</div>
+            <div class="portfolio-item">Upload Image 2 Here</div>
+            <div class="portfolio-item">Upload Image 3 Here</div>
+            <div class="portfolio-item">Upload Image 4 Here</div>
+            <div class="portfolio-item">Upload Image 5 Here</div>
+            <div class="portfolio-item">Upload Image 6 Here</div>
+        </div>
+        <p style="text-align: center;"><em>*Replace these grey boxes with actual artwork files in the final build*</em></p>
+
+        <hr style="border: 0; border-top: 1px solid #ccc; margin: 3rem 0;">
+
+        <h2 class="section-title">Professional Experience</h2>
+        
+        <div class="experience-card">
+            <h3>Storyboard/Pre-Production Artist | Mahayana Studios</h3>
+            <p><strong>June 2024 – March 2025</strong></p>
+            <ul>
+                <li>Translated script into detailed storyboards, ensuring clear scene visualization.</li>
+                <li>Designed compelling poster concepts and promo video animations.</li>
+                <li>Developed character concepts and pre-visualization assets.</li>
+            </ul>
+        </div>
+
+        <div class="experience-card">
+            <h3>Art Facilitator | Edify World School, Hyderabad</h3>
+            <p><strong>March 2023 – March 2024</strong></p>
+            <ul>
+                <li>Developed and implemented art curriculum aligned with the Cambridge Curriculum Framework.</li>
+                <li>Fostered a multicultural and inquiry-based learning environment.</li>
+            </ul>
+        </div>
+
+        <div class="experience-card">
+            <h3>Freelance Illustrator</h3>
+            <p><strong>Aug 2021 – March 2023</strong></p>
+            <ul>
+                <li>Created editorial illustrations, book covers, digital art commissions, and branding designs.</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <footer>
+        <h2>Let's Work Together</h2>
+        <p>Email: <a href="mailto:bhaskarskwork@gmail.com" style="color: #fff; text-decoration: underline;">bhaskarskwork@gmail.com</a></p>
+        <p>Phone: +91-7997641548</p>
+        <p>Location: Malkajgiri, Hyderabad</p>
+        <p style="margin-top: 2rem; font-size: 0.8rem; color: #777;">&copy; 2026 Bhaskar Sivakumar. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
