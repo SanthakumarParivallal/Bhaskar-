@@ -4,366 +4,423 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bhaskar Sivakumar | Visual Artist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;800&display=swap" rel="stylesheet">
+    
     <style>
-        /* Sketchbook Theme Variables */
+        /* --- BASE STYLES --- */
         :root {
-            --bg-paper: #f9f8f3;
-            --text-ink: #2b2b2b;
-            --crayon-color: #ff5e5e; 
-            --crayon-blue: #3a86ff;
-            --crayon-yellow: #ffbe0b;
+            --bg-color: #fafafa;
+            --text-main: #111111;
+            --text-light: #666666;
+            --accent: #ff3366; /* Punchy accent color */
         }
-        
+
         body {
             margin: 0;
             padding: 0;
-            background-color: var(--bg-paper);
-            background-image: radial-gradient(#d5d5d5 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: var(--text-ink);
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe Print', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            cursor: none; /* Hides default cursor for our custom one */
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* --- SVG FILTER FOR HAND-DRAWN CRAYON LOOK --- */
-        .scribble-effect {
-            filter: url(#scribble-filter);
-        }
-
-        /* --- BACKGROUND DRAWING CANVAS --- */
-        #sketch-canvas {
+        /* --- CUSTOM REACTIVE CURSOR --- */
+        #cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            border-radius: 50%;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2;
-            pointer-events: none; /* Lets you click through it */
-        }
-
-        /* --- REACTIVE CRAYON MOUSE BLOB --- */
-        #crayon-blob {
-            background-color: var(--crayon-color);
-            height: 60px;
-            aspect-ratio: 1;
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            translate: -50% -50%;
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            z-index: -1;
-            opacity: 0.8;
-            mix-blend-mode: multiply;
+            top: 0; left: 0;
             pointer-events: none;
-            filter: url(#scribble-filter);
-            animation: morph 2s infinite linear alternate;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
         }
 
-        @keyframes morph {
-            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: scale(1); }
-            100% { border-radius: 60% 40% 30% 70% / 60% 50% 40% 50%; transform: scale(1.2); }
+        #cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s;
         }
 
-        /* --- LAYOUT & UI --- */
+        /* Hover state for the cursor */
+        body.hovering #cursor-dot {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 51, 102, 0.2);
+        }
+        body.hovering #cursor-outline {
+            opacity: 0;
+        }
+
+        /* --- SCROLL REVEAL ANIMATION CLASS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- LAYOUT --- */
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 4rem 2rem;
-            position: relative;
-            z-index: 1;
+            padding: 0 2rem;
         }
 
+        /* --- HEADER & HERO --- */
         header {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 3rem 2rem;
-            background: rgba(255, 255, 255, 0.8);
-            border: 4px solid var(--text-ink);
-            box-shadow: 8px 8px 0px var(--crayon-blue);
-            transform: perspective(1000px);
-            transition: transform 0.1s ease;
+            padding: 2rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        header h1 {
-            font-size: 3.5rem;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-ink);
-        }
-
-        header h2 {
+        .logo {
+            font-weight: 800;
             font-size: 1.5rem;
-            color: var(--crayon-blue);
-            margin-top: 0;
+            letter-spacing: -1px;
+            text-transform: uppercase;
         }
 
-        header p {
-            max-width: 700px;
-            margin: 20px auto 0;
+        nav a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            padding: 8rem 0 6rem 0;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin: 0 0 1.5rem 0;
+            letter-spacing: -2px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            max-width: 600px;
             line-height: 1.6;
-            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 300;
         }
 
-        h2.section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: var(--text-ink);
-            text-decoration: underline;
-            text-decoration-color: var(--crayon-yellow);
-            text-decoration-thickness: 5px;
+        /* --- MASONRY PORTFOLIO GRID --- */
+        .portfolio-section {
+            padding: 4rem 0;
         }
 
-        /* --- PORTFOLIO GRID --- */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 5rem;
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 20px;
         }
 
-        .tilt-card {
-            background: #fff;
-            border: 3px solid var(--text-ink);
-            height: 250px;
+        /* Responsive breakdown for grid */
+        @media (max-width: 900px) { .masonry-grid { column-count: 2; } }
+        @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #eee;
+            /* Placeholder heights to simulate image variety */
+            min-height: 250px; 
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            color: var(--text-ink);
-            position: relative;
-            box-shadow: 5px 5px 0px var(--crayon-color);
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-            transition: transform 0.1s ease-out;
         }
 
-        .tilt-card p {
-            position: relative;
-            z-index: 1;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 5px 15px;
-            border: 2px solid var(--text-ink);
-            transform: translateZ(30px); /* Makes text pop out in 3D */
+        /* Simulating different image sizes for the masonry look */
+        .masonry-item:nth-child(even) { height: 400px; }
+        .masonry-item:nth-child(3n) { height: 300px; }
+
+        .masonry-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        /* --- EXPERIENCE TIMELINE --- */
-        .timeline {
+        /* Hover Overlay */
+        .item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            opacity: 0;
             display: flex;
-            flex-direction: column;
-            gap: 25px;
-            margin-bottom: 5rem;
-        }
-
-        .experience-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 3px solid var(--text-ink);
+            align-items: flex-end;
             padding: 2rem;
-            box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
-            transform: perspective(1000px);
-            transition: transform 0.1s ease-out;
+            transition: opacity 0.4s ease;
         }
 
-        .experience-card h3 {
-            margin: 0 0 5px 0;
-            color: var(--crayon-blue);
-            font-size: 1.5rem;
-            transform: translateZ(20px);
-        }
-
-        .experience-card span {
-            font-size: 1rem;
-            font-weight: bold;
-            color: var(--crayon-color);
-            display: block;
-            margin-bottom: 15px;
-        }
-
-        .experience-card ul {
-            padding-left: 25px;
+        .item-overlay h3 {
             margin: 0;
-            line-height: 1.6;
-            transform: translateZ(10px);
+            font-size: 1.5rem;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+
+        .masonry-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .masonry-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        .masonry-item:hover .item-overlay h3 {
+            transform: translateY(0);
+        }
+
+        /* --- EXPERIENCE & ABOUT --- */
+        .experience-section {
+            padding: 6rem 0;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            letter-spacing: -1px;
+        }
+
+        .job-card {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .job-card { grid-template-columns: 1fr; gap: 0.5rem; margin-bottom: 3rem;}
+        }
+
+        .job-date {
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .job-details h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+
+        .job-details h4 {
+            margin: 0 0 1rem 0;
+            color: var(--accent);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .job-details p {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
         }
 
         /* --- FOOTER --- */
         footer {
+            padding: 6rem 0 3rem 0;
             text-align: center;
-            padding: 3rem 2rem;
-            background: #fff;
-            border-top: 5px dashed var(--text-ink);
+            background-color: var(--text-main);
+            color: white;
+        }
+
+        footer h2 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0 0 1rem 0;
+            letter-spacing: -2px;
         }
 
         footer a {
-            color: var(--crayon-blue);
+            color: var(--accent);
+            font-size: 1.5rem;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 500;
         }
         
         footer a:hover {
             text-decoration: underline;
-            color: var(--crayon-color);
         }
     </style>
 </head>
 <body>
 
-    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
-        <defs>
-            <filter id="scribble-filter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
-
-    <canvas id="sketch-canvas"></canvas>
-    <div id="crayon-blob"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-outline"></div>
 
     <div class="container">
-        
-        <header class="scribble-effect">
-            <h1>BHASKAR SIVAKUMAR</h1>
-            <h2>VISUAL ARTIST</h2>
-            <p>
-                Creative and detail-oriented Illustrator with a passion for Visual Storytelling. 
-                With a background in Character Design, Storyboarding and Sequential Art, I am seeking to transition into an Art Educator role, where I can inspire and support students in exploring their creative curiosity and expressing themselves through Visual Art.
-            </p>
+        <header>
+            <div class="logo">Bhaskar.S</div>
+            <nav>
+                <a href="#work" class="hoverable">Work</a>
+                <a href="#experience" class="hoverable">Experience</a>
+                <a href="mailto:bhaskarskwork@gmail.com" class="hoverable">Contact</a>
+            </nav>
         </header>
 
-        <h2 class="section-title scribble-effect">My Portfolio</h2>
-        <div class="portfolio-grid">
-            <div class="tilt-card scribble-effect"><p>Artwork 1</p></div>
-            <div class="tilt-card scribble-effect"><p>Artwork 2</p></div>
-            <div class="tilt-card scribble-effect"><p>Artwork 3</p></div>
-            <div class="tilt-card scribble-effect"><p>Artwork 4</p></div>
-            <div class="tilt-card scribble-effect"><p>Artwork 5</p></div>
-            <div class="tilt-card scribble-effect"><p>Artwork 6</p></div>
-        </div>
+        <section class="hero reveal">
+            <h1>Visual Artist & <br>Storyboarder.</h1>
+            <p>I am a creative illustrator specializing in character design and sequential art. Currently seeking to inspire the next generation of creatives as an Art Educator.</p>
+        </section>
 
-        <h2 class="section-title scribble-effect">Experience</h2>
-        <div class="timeline">
+        <section id="work" class="portfolio-section">
+            <div class="masonry-grid">
+                <div class="masonry-item hoverable reveal">
+                    <p style="color:#999; position:absolute;">Replace with Image 1</p>
+                    <div class="item-overlay"><h3>Character Design</h3></div>
+                </div>
+                
+                <div class="masonry-item hoverable reveal">
+                    <p style="color:#999; position:absolute;">Replace with Image 2</p>
+                    <div class="item-overlay"><h3>Storyboards</h3></div>
+                </div>
+
+                <div class="masonry-item hoverable reveal">
+                    <p style="color:#999; position:absolute;">Replace with Image 3</p>
+                    <div class="item-overlay"><h3>Editorial Illustration</h3></div>
+                </div>
+
+                <div class="masonry-item hoverable reveal">
+                    <p style="color:#999; position:absolute;">Replace with Image 4</p>
+                    <div class="item-overlay"><h3>Visual Development</h3></div>
+                </div>
+
+                <div class="masonry-item hoverable reveal">
+                    <p style="color:#999; position:absolute;">Replace with Image 5</p>
+                    <div class="item-overlay"><h3>Pre-Production</h3></div>
+                </div>
+                
+                <div class="masonry-item hoverable reveal">
+                    <p style="color:#999; position:absolute;">Replace with Image 6</p>
+                    <div class="item-overlay"><h3>Sketches</h3></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="experience-section">
+            <h2 class="section-title reveal">Experience</h2>
             
-            <div class="experience-card scribble-effect">
-                <h3>Storyboard/Pre-Production Artist | Mahayana Studios</h3>
-                <span>June 2024 - March 2025</span>
-                <ul>
-                    <li>Translated script into detailed storyboards, ensuring clear scene visualization.</li>
-                    <li>Designed compelling poster concepts and promo video animations.</li>
-                    <li>Developed character concepts and pre-visualization assets.</li>
-                </ul>
+            <div class="job-card reveal">
+                <div class="job-date">June 2024 - Mar 2025</div>
+                <div class="job-details">
+                    <h3>Storyboard/Pre-Production Artist</h3>
+                    <h4>Mahayana Studios</h4>
+                    <p>• Translated script into detailed storyboards, ensuring clear scene visualization.</p>
+                    <p>• Designed compelling poster concepts and promo video animations.</p>
+                </div>
             </div>
 
-            <div class="experience-card scribble-effect">
-                <h3>Art Facilitator | Edify World School, Hyderabad</h3>
-                <span>March 2023 - March 2024</span>
-                <ul>
-                    <li>Developing and implementing an art curriculum aligned with the Cambridge Curriculum Framework.</li>
-                    <li>Foster a multicultural and inquiry-based learning environment.</li>
-                </ul>
+            <div class="job-card reveal">
+                <div class="job-date">Mar 2023 - Mar 2024</div>
+                <div class="job-details">
+                    <h3>Art Facilitator</h3>
+                    <h4>Edify World School, Hyderabad</h4>
+                    <p>• Developed art curriculum aligned with the Cambridge Curriculum Framework.</p>
+                    <p>• Fostered a multicultural and inquiry-based learning environment.</p>
+                </div>
             </div>
 
-             <div class="experience-card scribble-effect">
-                <h3>Pre-Production Artist | Pocket Aces, Mumbai</h3>
-                <span>Jan 2020 - Aug 2021</span>
-                <ul>
-                    <li>Led the conceptualization and development of compelling and visually distinct characters.</li>
-                    <li>Crafting storyboards that effectively communicate narrative sequences.</li>
-                </ul>
+            <div class="job-card reveal">
+                <div class="job-date">Aug 2021 - Mar 2023</div>
+                <div class="job-details">
+                    <h3>Freelance Illustrator</h3>
+                    <h4>Independent</h4>
+                    <p>• Created editorial illustrations, book covers, digital art commissions, and branding designs.</p>
+                </div>
             </div>
 
-        </div>
+            <div class="job-card reveal">
+                <div class="job-date">Jan 2020 - Aug 2021</div>
+                <div class="job-details">
+                    <h3>Pre-Production Artist</h3>
+                    <h4>Pocket Aces, Mumbai</h4>
+                    <p>• Led the conceptualization and development of compelling and visually distinct characters.</p>
+                    <p>• Crafted storyboards that effectively communicate narrative sequences.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <footer>
-        <h2>Let's Create Together!</h2>
-        <p>Email: <a href="mailto:bhaskarskwork@gmail.com">bhaskarskwork@gmail.com</a></p>
-        <p>Phone: +91-7997641548</p>
-        <p>Location: Malkajgiri, Hyderabad</p>
+    <footer id="contact" class="reveal">
+        <h2>Let's Talk.</h2>
+        <a href="mailto:bhaskarskwork@gmail.com" class="hoverable">bhaskarskwork@gmail.com</a>
+        <p style="color: #666; margin-top: 2rem;">Hyderabad, India • +91-7997641548</p>
     </footer>
 
     <script>
-        // 1. CRAYON BLOB FOLLOWER
-        const blob = document.getElementById("crayon-blob");
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-
-        document.addEventListener("mousemove", (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+        // 1. CUSTOM MAGNETIC CURSOR
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+        
+        window.addEventListener('mousemove', function(e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
             
-            blob.animate({
-                left: `${mouseX}px`,
-                top: `${mouseY}px`
-            }, { duration: 150, fill: "forwards" });
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Add a slight delay to the outline for a smooth drag effect
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
         });
 
-        // 2. MAGIC SKETCHPAD DRAWING CANVAS
-        const canvas = document.getElementById("sketch-canvas");
-        const ctx = canvas.getContext("2d");
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener("resize", resizeCanvas);
-        resizeCanvas();
+        // Make cursor expand when hovering over elements with class 'hoverable'
+        const hoverables = document.querySelectorAll('.hoverable');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
 
-        let lastX = 0;
-        let lastY = 0;
-        let isDrawing = false;
+        // 2. SCROLL REVEAL ANIMATIONS
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100; // how many pixels before it appears
 
-        document.addEventListener('mousemove', (e) => {
-            if (!isDrawing) {
-                lastX = e.clientX;
-                lastY = e.clientY;
-                isDrawing = true;
-                return;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
             }
-
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.clientX, e.clientY);
-            ctx.strokeStyle = '#ff5e5e'; // Red crayon ink
-            ctx.lineWidth = 4;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.stroke();
-
-            lastX = e.clientX;
-            lastY = e.clientY;
-        });
-
-        // Fades the drawing away slowly
-        setInterval(() => {
-            ctx.fillStyle = "rgba(249, 248, 243, 0.05)"; // Matches --bg-paper
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }, 50);
-
-        // 3. 3D TILT EFFECT FOR CARDS
-        const tiltElements = document.querySelectorAll('.tilt-card, .experience-card, header');
-        
-        tiltElements.forEach(el => {
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -10; // Max tilt 10deg
-                const rotateY = ((x - centerX) / centerX) * 10;
-                
-                el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
-            
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-            });
-        });
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
     </script>
 </body>
 </html>
